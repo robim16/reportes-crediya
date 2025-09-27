@@ -34,7 +34,7 @@ entrypoint:
 aws:
   access-key-id: "${AWS_ACCESS_KEY_ID:AWS_ACCESS_KEY_ID}"
   secret-access-key: "${AWS_SECRET_ACCESS_KEY:AWS_SECRET_ACCESS_KEY}"
-  region: "${AWS_REGION:us-east-1}"
+  region: "${AWS_DEFAULT_REGION:us-east-1}"
   dynamodb:
-    #endpoint: "http://localhost:8000"
-    tableName: prestamos
+    endpoint: "https://dynamodb.us-east-1.amazonaws.com"
+

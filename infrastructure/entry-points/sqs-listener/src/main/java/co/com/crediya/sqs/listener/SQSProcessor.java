@@ -15,6 +15,8 @@ public class SQSProcessor implements Function<Message, Mono<Void>> {
 
     @Override
     public Mono<Void> apply(Message message) {
+
+        System.out.println("mensaje recibido de la cola " + message);
         try {
 
             return reportesUseCase.incrementarPrestamos();
