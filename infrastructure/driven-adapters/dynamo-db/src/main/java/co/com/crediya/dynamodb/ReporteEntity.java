@@ -9,7 +9,7 @@ public class ReporteEntity {
     private Long cantidad;
 
     @DynamoDbPartitionKey
-    @DynamoDbAttribute("id")
+    @DynamoDbAttribute("prestamos-aprobados")
     public String getId() {
         return id;
     }
