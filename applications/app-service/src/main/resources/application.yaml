@@ -37,4 +37,5 @@ aws:
   region: "${AWS_DEFAULT_REGION:us-east-1}"
   dynamodb:
     endpoint: "https://dynamodb.us-east-1.amazonaws.com"
-
+  #app:
+  #dynamo:
