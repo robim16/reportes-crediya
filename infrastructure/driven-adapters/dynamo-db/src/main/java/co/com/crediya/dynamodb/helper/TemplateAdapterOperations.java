@@ -42,12 +42,20 @@ public abstract class TemplateAdapterOperations<E, K, V> {
         return Mono.fromFuture(table.putItem(toEntity(model))).thenReturn(model);
     }
 
-    public Mono<E> getById(K id) {
+    /*public Mono<E> getById(K id) {
         return Mono.fromFuture(table.getItem(Key.builder()
                         .partitionValue(AttributeValue.builder().s((String) id).build())
                         .build()))
                 .map(this::toModel);
+    }*/
+
+    public Mono<E> getById(K id) {
+        return Mono.fromFuture(() -> table.getItem(Key.builder()
+                        .partitionValue(AttributeValue.builder().s((String) id).build())
+                        .build()))
+                .flatMap(item -> Mono.justOrEmpty(item != null ? toModel(item) : null));
     }
+
 
     public Mono<E> delete(E model) {
         return Mono.fromFuture(table.deleteItem(toEntity(model))).map(this::toModel);

@@ -45,13 +45,4 @@ public class DynamoDBConfig {
                 .build();
     }
 
-    @Bean
-    @Profile("!local & !dev & !cer & !pdn")
-    public DynamoDbAsyncClient dynamoDefault(@Value("${aws.region}") String region) {
-        return DynamoDbAsyncClient.builder()
-                .credentialsProvider(DefaultCredentialsProvider.create())
-                .region(Region.of(region))
-                .build();
-    }
-
 }

@@ -15,12 +15,16 @@ public class SQSProcessor implements Function<Message, Mono<Void>> {
 
     @Override
     public Mono<Void> apply(Message message) {
-        try {
-
-            return reportesUseCase.incrementarPrestamos();
-
-        } catch (Exception e) {
-            return Mono.error(new RuntimeException("Error al procesar el mensaje de SQS", e));
-        }
+        return Mono.just(message)
+                .doOnNext(msg -> {
+                    System.out.println("Mensaje recibido desde SQS:");
+                    System.out.println(msg.body());
+                })
+                .flatMap(msg -> reportesUseCase.incrementarPrestamos())
+                .onErrorResume(ex -> {
+                    System.err.println("Error procesando mensaje: " + ex.getMessage());
+                    ex.printStackTrace();
+                    return Mono.empty();
+                });
     }
 }
