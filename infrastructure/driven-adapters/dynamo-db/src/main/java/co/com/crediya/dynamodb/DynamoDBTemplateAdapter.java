@@ -51,7 +51,7 @@ public class DynamoDBTemplateAdapter extends TemplateAdapterOperations<Prestamos
                             .doOnSuccess(r -> System.out.println("Contador actualizado correctamente"))
                             .then();
                 })
-                /*.switchIfEmpty(Mono.defer(() -> {
+                .switchIfEmpty(Mono.defer(() -> {
                     System.out.println("No existía el reporte, creando uno nuevo con cantidad = 1");
                     PrestamosReporte nuevo = new PrestamosReporte();
                     nuevo.setId(REPORT_ID);
@@ -59,7 +59,7 @@ public class DynamoDBTemplateAdapter extends TemplateAdapterOperations<Prestamos
                     return save(nuevo)
                             .doOnSuccess(r -> System.out.println("Reporte inicial creado"))
                             .then();
-                }))*/
+                }))
                 .onErrorResume(ex -> {
                     System.err.println("Error incrementando el contador: " + ex.getMessage());
                     ex.printStackTrace();
