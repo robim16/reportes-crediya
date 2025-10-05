@@ -13,4 +13,5 @@ import lombok.Setter;
 public class PrestamosReporte {
     private String id;
     private Long cantidad;
+    private Long montoTotal;
 }

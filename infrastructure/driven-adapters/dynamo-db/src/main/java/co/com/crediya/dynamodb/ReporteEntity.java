@@ -7,6 +7,7 @@ public class ReporteEntity {
 
     private String id;
     private Long cantidad;
+    private Long montoTotal;
 
     @DynamoDbPartitionKey
     @DynamoDbAttribute("id")
@@ -25,5 +26,14 @@ public class ReporteEntity {
 
     public void setCantidad(Long cantidad) {
         this.cantidad = cantidad;
+    }
+
+    @DynamoDbAttribute("montoTotal")
+    public Long getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setMontoTotal(Long montoTotal) {
+        this.montoTotal = montoTotal;
     }
 }

@@ -2,6 +2,7 @@ package co.com.crediya.usecase.reportes;
 
 import co.com.crediya.model.prestamosreporte.PrestamosReporte;
 import co.com.crediya.model.prestamosreporte.gateways.PrestamosReporteRepository;
+import co.com.crediya.model.solicitud.Solicitud;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -11,7 +12,7 @@ public class ReportesUseCase {
     public Mono<PrestamosReporte> obtenerCantidadPrestamos() {
         return prestamosReporteRepository.obtenerReporte();
     }
-    public Mono<Void> incrementarPrestamos() {
-        return prestamosReporteRepository.incrementarContador();
+    public Mono<Void> incrementarPrestamos(Solicitud solicitud) {
+        return prestamosReporteRepository.incrementarContador(solicitud);
     }
 }

@@ -3,6 +3,7 @@ package co.com.crediya.dynamodb;
 import co.com.crediya.dynamodb.helper.TemplateAdapterOperations;
 import co.com.crediya.model.prestamosreporte.PrestamosReporte;
 import co.com.crediya.model.prestamosreporte.gateways.PrestamosReporteRepository;
+import co.com.crediya.model.solicitud.Solicitud;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
@@ -37,7 +38,7 @@ public class DynamoDBTemplateAdapter extends TemplateAdapterOperations<Prestamos
     }
 
     @Override
-    public Mono<Void> incrementarContador() {
+    public Mono<Void> incrementarContador(Solicitud solicitud) {
         return getById(REPORT_ID)
                 .filter(reporte -> reporte != null)
                 .flatMap(reporte -> {
@@ -45,21 +46,28 @@ public class DynamoDBTemplateAdapter extends TemplateAdapterOperations<Prestamos
                     Long nuevaCantidad = cantidadActual + 1;
                     reporte.setCantidad(nuevaCantidad);
 
+                    Long montoPrestamos = reporte.getMontoTotal() != null ? reporte.getMontoTotal() : 0L;
+                    Long nuevoMonto = montoPrestamos + solicitud.getMonto();
+                    reporte.setMontoTotal(nuevoMonto);
+
                     System.out.printf("Incrementando contador: %d → %d%n", cantidadActual, nuevaCantidad);
+
+                    System.out.printf("Incrementando monto total: %d → %d%n", montoPrestamos, nuevoMonto);
 
                     return save(reporte)
                             .doOnSuccess(r -> System.out.println("Contador actualizado correctamente"))
                             .then();
                 })
-                .switchIfEmpty(Mono.defer(() -> {
+                /*.switchIfEmpty(Mono.defer(() -> {
                     System.out.println("No existía el reporte, creando uno nuevo con cantidad = 1");
                     PrestamosReporte nuevo = new PrestamosReporte();
                     nuevo.setId(REPORT_ID);
                     nuevo.setCantidad(1L);
+                    nuevo.setMontoTotal(0L);
                     return save(nuevo)
                             .doOnSuccess(r -> System.out.println("Reporte inicial creado"))
                             .then();
-                }))
+                }))*/
                 .onErrorResume(ex -> {
                     System.err.println("Error incrementando el contador: " + ex.getMessage());
                     ex.printStackTrace();
